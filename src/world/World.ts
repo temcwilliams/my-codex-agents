@@ -1,3 +1,4 @@
+const MOBILE_RENDER = typeof matchMedia !== "undefined" && matchMedia("(pointer: coarse)").matches;
 import {
   ACESFilmicToneMapping,
   Frustum,
@@ -126,7 +127,7 @@ export class World {
   constructor(private container: HTMLElement, private cb: WorldCallbacks) {
     this.renderer = new WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(this.pixelRatio);
-    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.enabled = !MOBILE_RENDER;
     this.renderer.shadowMap.type = PCFSoftShadowMap;
     // The building barely moves; refresh shadows a few times a second, not every frame.
     this.renderer.shadowMap.autoUpdate = false;
@@ -141,7 +142,7 @@ export class World {
     this.scene.add(this.hemi);
     this.sun.position.set(14, 24, 10);
     this.sun.castShadow = true;
-    this.sun.shadow.mapSize.setScalar(REC ? 8192 : 4096);
+    this.sun.shadow.mapSize.setScalar(REC ? 8192 : (MOBILE_RENDER ? 1024 : 4096));
     this.sun.shadow.bias = -0.0004;
     this.sun.shadow.normalBias = 0.03;
     this.sun.shadow.radius = 4;
@@ -238,7 +239,7 @@ export class World {
   private projView = new Matrix4();
   /** ?rec (scripted recordings): fixed resolution, no adaptive drops. */
   private lockResolution = new URLSearchParams(location.search).has('rec');
-  private pixelRatio = this.lockResolution ? Math.min(devicePixelRatio, 4) : Math.min(devicePixelRatio, 1.75);
+  private pixelRatio = this.lockResolution ? Math.min(devicePixelRatio, 4) : Math.min(devicePixelRatio, MOBILE_RENDER ? 1 : 1.75);
   private slowFrames = 0;
   private fastFrames = 0;
   private frameNo = 0;
@@ -712,7 +713,7 @@ export class World {
   private adaptResolution(dt: number) {
     if (dt > 1 / 40) this.slowFrames++;
     else if (dt < 1 / 55) this.fastFrames++;
-    const cap = Math.min(devicePixelRatio, 1.75);
+    const cap = Math.min(devicePixelRatio, MOBILE_RENDER ? 1 : 1.75);
     let next = this.pixelRatio;
     if (this.slowFrames > 40) next = Math.max(0.75, this.pixelRatio - 0.25);
     else if (this.fastFrames > 300 && this.pixelRatio < cap) next = Math.min(cap, this.pixelRatio + 0.25);
