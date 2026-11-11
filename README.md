@@ -10,8 +10,9 @@ The Blueprint creates a free Docker web service, with separate generated secrets
 
 1. Open the deployment link, authorize Render to read this private repository, and deploy the Blueprint.
 2. Open the resulting service URL. The viewer asks for an access code. Use the service's generated `VIEW_TOKEN` from its Environment settings.
-3. Set `AGENT_VIEWER_URL` to the service's HTTPS URL and `AGENT_VIEWER_INGEST_TOKEN` to its generated `INGEST_TOKEN` in the source workspace's secret environment settings. Do not post tokens into chat.
-4. With the local Agent Floor listening on port 4317, run `node hosting/relay.mjs` in this checkout. It sends only that floor's current state to the configured viewer.
+3. Keep `AGENT_VIEWER_URL`, `VIEW_TOKEN` and `INGEST_TOKEN` in the source workspace's ignored `.env.hosting` file with permissions 0600. Do not post tokens into chat.
+4. Set the Codex CLI `notify` command to `["node", "--use-env-proxy", "/absolute/path/to/hosting/notify-codex.mjs"]`. Completed turns post directly to the hosted viewer; a running local floor is used when available.
+5. Optionally run `hosting/relay.mjs` with its documented environment variables to mirror ongoing local floor activity.
 
 Codex CLI uses the notification hook in `~/.codex/config.toml` and reports completed turns. New sessions must load that configuration. Agents running outside this workspace need their own configuration.
 
