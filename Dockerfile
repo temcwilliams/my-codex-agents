@@ -1,7 +1,7 @@
 FROM node:24-bookworm-slim AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --omit=optional
+RUN ELECTRON_SKIP_BINARY_DOWNLOAD=1 npm ci
 COPY . .
 RUN npm run build
 FROM node:24-bookworm-slim
