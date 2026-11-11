@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: my-codex-agents
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: VIEW_TOKEN
+        generateValue: true
+      - key: INGEST_TOKEN
+        generateValue: true
