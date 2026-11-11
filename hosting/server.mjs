@@ -1,3 +1,4 @@
+import { getProject } from './project.mjs';
 import { createServer } from 'node:http';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { startServer } from '../server/index.mjs';
@@ -28,6 +29,7 @@ createServer(async(req,res)=>{
   }
   const cookie=(req.headers.cookie||'').split(';').map(x=>x.trim()).find(x=>x.startsWith('floor_session='))?.slice(14);
   if(!equal(cookie,session)){res.writeHead(url.pathname==='/'?200:401,{'Content-Type':'text/html'});res.end(login);return;}
+  if(url.pathname==='/project'&&req.method==='GET'){res.writeHead(200,{'Content-Type':'application/json'});res.end(JSON.stringify(await getProject()));return;}
   if(req.method!=='GET'){res.writeHead(405);res.end();return;}
   if(url.pathname==='/'&&!url.searchParams.has('poll')){res.writeHead(302,{'Location':'/?poll=1'});res.end();return;}
   if(!(url.pathname==='/'||url.pathname==='/state'||url.pathname==='/favicon.svg'||/^\/assets\/[a-zA-Z0-9_.-]+$/.test(url.pathname))){res.writeHead(404);res.end();return;}

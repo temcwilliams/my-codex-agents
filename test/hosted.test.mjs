@@ -10,6 +10,7 @@ test('hosted gateway protects state and writes, authenticates the viewer and acc
   for(let i=0;i<50;i++){try{ready=(await fetch('http://127.0.0.1:24318/health')).ok;if(ready)break;}catch{}await new Promise(r=>setTimeout(r,100));}
   assert.ok(ready,'gateway started');const base='http://127.0.0.1:24318';
   assert.equal((await fetch(base+'/state')).status,401);
+  assert.equal((await fetch(base+'/project')).status,401);
   assert.equal((await fetch(base+'/api/sync',{method:'POST',body:'{}'})).status,401);
   const login=await fetch(base+'/login',{method:'POST',body:new URLSearchParams({code:view}),redirect:'manual'});
   assert.equal(login.status,303);const cookie=login.headers.get('set-cookie').split(';')[0];

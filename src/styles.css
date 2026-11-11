@@ -1123,3 +1123,7 @@ button {
 .in-app-mac .demo-note {
   top: 64px;
 }
+
+.project-tracker{position:fixed;top:76px;left:12px;z-index:25;width:min(340px,calc(100vw - 24px));max-height:55vh;overflow:auto;background:var(--panel,#fff);color:var(--text,#222);border:1px solid #aaa8;border-radius:12px;padding:12px;box-shadow:0 4px 20px #0002;font:13px/1.5 system-ui;backdrop-filter:blur(12px)}
+.project-tracker summary{cursor:pointer;font-weight:650}
+.project-tracker p{margin:12px 0 4px}.project-tracker a{display:block;color:#d84b1e;overflow-wrap:anywhere;padding:4px 0}

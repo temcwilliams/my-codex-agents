@@ -1,3 +1,4 @@
+import { mountProjectTracker } from './ui/project';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
 import './styles.css';
@@ -99,6 +100,7 @@ async function boot() {
 
   hud.setMode(store.mode);
   connect();
+  mountProjectTracker(app);
 
   // ?stats shows a small performance readout (for contributors and bug reports).
   if (new URLSearchParams(location.search).has('stats')) {
