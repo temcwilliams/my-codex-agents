@@ -53,7 +53,7 @@ export function connect() {
       try {
         const response = await fetch(`${base}/state`, { cache: 'no-store' });
         if (!response.ok) throw new Error('Floor unavailable');
-        store.replace(await response.json() as WorldState);
+        store.replace(await response.json() as WorldState, false);
         store.setMode('live');
       } catch { store.setMode('connecting'); }
       window.setTimeout(refresh, 2000);

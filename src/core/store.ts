@@ -47,9 +47,9 @@ class Store {
     this.emit();
   }
 
-  replace(state: WorldState) {
+  replace(state: WorldState, resetScene = true) {
     this.state = state;
-    this.emitEffects([{ kind: 'reset' }]);
+    if (resetScene) this.emitEffects([{ kind: 'reset' }]);
     this.emit();
   }
 
