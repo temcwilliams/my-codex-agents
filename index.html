@@ -1,15 +1,10 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="A live 3D office for your coding agents." />
-    <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>Agent Floor</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Agent Floor</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080d19;color:#eff4ff;font:16px system-ui,sans-serif}header,main,footer{max-width:1250px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1,h2,h3,p{margin:0}h1{font-size:clamp(28px,5vw,48px)}p,footer{color:#aab9d3}button{background:#18253c;border:1px solid #60728e;border-radius:9px;color:white;min-height:44px;padding:0 14px;cursor:pointer}button:focus-visible{outline:3px solid white}nav{display:flex;gap:8px;flex-wrap:wrap}.scene{perspective:1400px;padding:36px 10px 65px}.floor{display:grid;gap:24px;transform:rotateX(22deg) rotateZ(var(--angle, -4deg));transform-style:preserve-3d}.suite{--tone:#5ce5ff;display:grid;grid-template-columns:1fr 1.65fr 1fr;gap:12px;padding:16px;background:#101c30;border:1px solid var(--tone);box-shadow:0 12px 0 #060b15,0 20px 32px #0008;border-radius:16px}.suite:last-child{--tone:#c1a4ff}.suite header{grid-column:1/-1;margin:0;padding:0;color:var(--tone)}.room{position:relative;min-width:0;border:1px solid var(--tone);border-top:5px solid var(--tone);border-radius:8px;background:linear-gradient(125deg,#31486588,#111c30 55%);padding:12px;min-height:186px}.room h3{font-size:15px}.furniture{height:50px;margin:14px auto;background:linear-gradient(#536785,#233350);border:1px solid #8494af;border-radius:8px;width:66%;box-shadow:0 6px #080e1c}.conference .furniture{width:90%;height:46px;border-radius:24px;background:repeating-linear-gradient(90deg,#4a5f7d 0 24%,#2b3b55 25%)}.lounge .furniture{border:8px solid #715d96;background:#302447}.agents{display:flex;gap:6px;flex-wrap:wrap}.agent{overflow-wrap:anywhere;border:1px solid var(--tone);border-radius:12px;padding:4px 8px;font-size:13px;background:#0a1426}.empty{font-size:13px}.flat .floor{transform:none}.flat .scene{padding-top:12px}@media(max-width:720px){main,header,footer{padding:16px}.scene{padding:8px 0 24px}.floor{transform:rotateX(10deg)}.suite{grid-template-columns:1fr}.room{min-height:112px}.furniture{height:28px;margin:8px auto}.conference .furniture{height:28px}.rotate{display:none}}@media(prefers-reduced-motion:no-preference){.floor{transition:transform .25s}}
+</style>
+<header><div><h1>Agent Floor</h1><p>Codex and ChatGPT activity</p></div><nav aria-label="Floor controls"><button class="rotate" id="left">Rotate left</button><button class="rotate" id="right">Rotate right</button><button id="view" aria-pressed="false">Flat view</button></nav></header>
+<main><div class="scene"><div class="floor" id="floor"></div></div></main>
+<footer id="connection" role="status">Connecting to activity feeds…</footer>
+<script src="/floor.js" defer></script>
 </html>

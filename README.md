@@ -1,21 +1,11 @@
-# My Codex agents
+# Agent Floor
 
-A protected phone viewer for Codex notifications from the connected workspace. This does not track ChatGPT conversations or automatically discover other computers.
+Use Node.js 22 or later. Run `npm start` and open http://localhost:3000. Run `node --test` for request-handler tests.
 
-[Deploy to Render](https://render.com/deploy?repo=https://github.com/temcwilliams/my-codex-agents)
+Deploy as a new Render web service with `npm start` and the `/healthz` health check. The server uses Render's PORT variable.
 
-The Blueprint creates a free Docker web service, with separate generated secrets for viewing and ingesting data. No agent activity is stored in this repository. Free services may sleep while unused and lose in-memory state on restart; the relay refreshes state every ten seconds while the source workspace is running.
+An authorized publisher can POST a complete snapshot to `/api/activity/codex` or `/api/activity/chatgpt` with the corresponding bearer token configured in `CODEX_FEED_TOKEN` or `CHATGPT_FEED_TOKEN`. Send `{"agents":[{"name":"Display alias","role":"support","status":"idle"}]}`. Roles are primary and support. Statuses are active and idle. Publish at least once every 30 seconds, including empty snapshots when a connected suite has no agents.
 
-## Deployment
+Snapshots are held in memory and expire after 30 seconds. Anyone with access to the site can read current snapshots. Publish display aliases only. The dashboard does not collect prompts or transcripts. This project does not ship with a publisher configured for your account.
 
-1. Open the deployment link, authorize Render to read this private repository, and deploy the Blueprint.
-2. Open the resulting service URL. The viewer asks for an access code. Use the service's generated `VIEW_TOKEN` from its Environment settings.
-3. Keep `AGENT_VIEWER_URL`, `VIEW_TOKEN` and `INGEST_TOKEN` in the source workspace's ignored `.env.hosting` file with permissions 0600. Do not post tokens into chat.
-4. Set the Codex CLI `notify` command to `["node", "--use-env-proxy", "/absolute/path/to/hosting/notify-codex.mjs"]`. Completed turns post directly to the hosted viewer; a running local floor is used when available.
-5. Optionally run `hosting/relay.mjs` with its documented environment variables to mirror ongoing local floor activity.
-
-Codex CLI uses the notification hook in `~/.codex/config.toml` and reports completed turns. New sessions must load that configuration. Agents running outside this workspace need their own configuration.
-
-## Validation
-
-`npm test` checks the protocol, adapters, HTTP server and protected hosting gateway. `npm run build` typechecks and builds the web UI.
+To mirror an existing local Agent Floor that already receives Codex events, run `node bridge.mjs` with AGENT_FLOOR_URL and the same CODEX_FEED_TOKEN as the new Render service. The bridge reads the local /state endpoint on port 4317 by default. Set LOCAL_FLOOR_URL to override the loopback address. It forwards aliases, roles and statuses only. ChatGPT stays unavailable unless a source provides ChatGPT agent records or posts snapshots directly.
